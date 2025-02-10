@@ -1,4 +1,4 @@
-# NestJS Weather API Wrapper
+# Weather API Wrapper
 
 A **NestJS** application that integrates with **OpenWeatherMap**, supports **authentication (JWT)**, **caching (Redis)**, **rate limiting**, **background jobs**, and provides **REST & GraphQL APIs**.
 
@@ -7,7 +7,7 @@ A **NestJS** application that integrates with **OpenWeatherMap**, supports **aut
 ## 🚀 Features
 
 ✅ **NestJS Modular Architecture**  
-✅ **REST & GraphQL Support**  
+✅ **REST & GraphQL**  
 ✅ **Authentication (JWT)**  
 ✅ **Rate Limiting**  
 ✅ **Caching (Redis)**  
@@ -31,15 +31,15 @@ Create a `.env` file in the project root:
 
 ```ini
 PORT=3000
-OPENWEATHER_API_KEY=your_openweathermap_api_key
-JWT_SECRET=secret key
+OPENWEATHER_API_KEY=openweathermap_api_key
+JWT_SECRET=secret-key
 REDIS_HOST=localhost
 REDIS_PORT=6379
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
-POSTGRES_DB=weatherdb
+POSTGRES_DB=dbname
 ```
 
 ### **3️⃣ Run PostgreSQL & Redis (Docker)**
@@ -302,14 +302,10 @@ src/
 │   │   ├── auth.controller.ts
 │   │   ├── jwt.strategy.ts
 │   │   ├── local.strategy.ts
-│── config/
-│   ├── app.config.ts
-│── jobs/
+│── logger/
+│   ├── logger.service.ts
+│── job/
 │   ├── weather-update.job.ts
-│── common/
-│   ├── filters/
-│   ├── interceptors/
-│   ├── middleware/
 │── main.ts
 │── app.module.ts
 │── .env
