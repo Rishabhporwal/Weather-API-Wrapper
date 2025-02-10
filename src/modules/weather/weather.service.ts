@@ -9,7 +9,7 @@ export class WeatherService {
   private readonly logger = new Logger(WeatherService.name);
   private weatherApiUrl: string;
   private weatherApiKey: string;
-  private readonly cacheTTL = 360000; // Cache expires in 1 hour
+  private readonly cacheTTL = Number(process.env.CACHE_TTL); // Cache expires in 30 mins
 
   constructor(
     private readonly httpService: HttpService,

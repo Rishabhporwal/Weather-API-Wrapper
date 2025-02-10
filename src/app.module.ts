@@ -40,7 +40,7 @@ import * as redisStore from 'cache-manager-redis-store';
       store: redisStore,
       host: process.env.REDIS_HOST,
       port: Number(process.env.REDIS_PORT || '6379'),
-      ttl: 360000,
+      ttl: Number(process.env.CACHE_TTL), // Cache expires in 30 mins
     }),
     ThrottlerModule.forRoot([
       {
