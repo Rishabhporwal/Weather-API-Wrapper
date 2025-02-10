@@ -1,11 +1,7 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
-import { WeatherService } from '../modules/weather/weather.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Favorite } from '../modules/favorite/entities/favorite.entity';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { WeatherService } from './../modules/weather/weather.service';
+import { FavoriteService } from './../modules/favorite/favorite.service';
 
 @Injectable()
 export class WeatherUpdateJob {
@@ -13,33 +9,40 @@ export class WeatherUpdateJob {
 
   constructor(
     private readonly weatherService: WeatherService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    @InjectRepository(Favorite)
-    private favoriteRepository: Repository<Favorite>,
+    private readonly favoritesService: FavoriteService,
   ) {}
 
-  @Cron('0/30 * * * * *') // Runs every 30 minutes
-  async updateWeatherData() {
-    this.logger.log('Updating weather data for favorite locations...');
+  // Runs every 30 minutes
+  @Cron(CronExpression.EVERY_30_MINUTES)
+  async updateWeatherForFavorites() {
+    this.logger.log('Starting weather update job...');
 
-    const favoriteLocations = await this.favoriteRepository.find({
-      relations: ['user'],
-    });
+    try {
+      const favorites = await this.favoritesService.getAllFavoriteLocations();
 
-    for (const favorite of favoriteLocations) {
-      try {
-        const weatherData = await this.weatherService.getWeather(favorite.city);
-        await this.cacheManager.set(
-          `weather_${favorite.city}`,
-          weatherData,
-          Number(process.env.CACHE_TTL),
-        ); // Cache for 30 minutes
-        this.logger.log(`Updated weather for ${favorite.city}`);
-      } catch (error) {
-        this.logger.error(
-          `Failed to update weather for ${favorite.city}: ${error.message}`,
-        );
+      if (favorites.length === 0) {
+        this.logger.log('No favorite locations found.');
+        return;
       }
+
+      for (const location of favorites) {
+        this.logger.log(`Updating weather for: ${location.city}`);
+
+        try {
+          const weatherData = await this.weatherService.getWeather(
+            location.city,
+          );
+          this.logger.log(
+            `Updated weather for ${location.city}: ${JSON.stringify(weatherData)}`,
+          );
+        } catch (error) {
+          this.logger.error(
+            `Error updating weather for ${location.city}: ${error.message}`,
+          );
+        }
+      }
+    } catch (error) {
+      this.logger.error(`Weather update job failed: ${error.message}`);
     }
   }
 }

@@ -11,6 +11,7 @@ import { Favorite } from './modules/favorite/entities/favorite.entity';
 import { User } from './modules/auth/entities/user.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
+import { WeatherUpdateJob } from './job/weather-update.job';
 // import { GraphQLModule } from '@nestjs/graphql';
 // import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
@@ -52,7 +53,7 @@ import * as redisStore from 'cache-manager-redis-store';
     AuthModule,
     FavoriteModule,
   ],
-  providers: [CustomLogger],
+  providers: [CustomLogger, WeatherUpdateJob],
   exports: [CustomLogger],
 })
 export class AppModule {}

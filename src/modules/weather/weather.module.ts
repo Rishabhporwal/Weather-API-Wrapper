@@ -6,10 +6,10 @@ import { WeatherController } from './weather.controller';
 import { WeatherResolver } from './weather.resolver';
 import { CacheModule } from '@nestjs/cache-manager';
 
-
 @Module({
   imports: [HttpModule, ConfigModule, CacheModule.register()],
   controllers: [WeatherController],
   providers: [WeatherService, WeatherResolver],
+  exports: [WeatherService]
 })
 export class WeatherModule {}
