@@ -23,6 +23,7 @@ import { join } from 'path';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // Auto-generate schema
       sortSchema: true,
+      context: ({ req }) => ({ req }),
     }),
     ScheduleModule.forRoot(), // Enable Task Scheduling
     TypeOrmModule.forRootAsync({

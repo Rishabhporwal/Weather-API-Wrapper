@@ -2,9 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateFavoriteDto {
+  city: String!
+}
+
+type Favorite {
+  city: String!
+  id: Float!
+  user: User!
+}
+
+type Mutation {
+  addFavorite(createFavoriteDto: CreateFavoriteDto!): Favorite!
+  removeFavorite(id: Float!): Favorite!
+}
+
 type Query {
+  getAllFavoriteLocations: [Favorite!]!
+  getFavorites: [Favorite!]!
   getForecast(city: String!): [WeatherDto!]!
   getWeather(city: String!): WeatherDto!
+}
+
+type User {
+  favorites: [Favorite!]
 }
 
 type WeatherDto {
