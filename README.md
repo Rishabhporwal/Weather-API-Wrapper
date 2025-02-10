@@ -1,131 +1,238 @@
-project:
-  name: "NestJS Weather API"
-  description: "A production-ready NestJS application integrating OpenWeatherMap API with authentication, caching, rate limiting, and background jobs."
-  features:
-    - NestJS Modular Architecture
-    - REST & GraphQL Support
-    - Authentication (JWT)
-    - Rate Limiting
-    - Caching (Redis)
-    - Background Jobs (Weather Updates)
-    - Logging & Error Handling
-    - 100% Test Coverage with Jest
+# 🌤 NestJS Weather API
 
-setup:
-  steps:
-    - step: "Install Dependencies"
-      command: "npm install"
-    
-    - step: "Set Up Environment Variables"
-      file: ".env"
-      content:
-        PORT: 3000
-        OPENWEATHER_API_KEY: "your_openweathermap_api_key"
-        JWT_SECRET: "your_secret"
-        REDIS_HOST: "localhost"
-        REDIS_PORT: 6379
-        POSTGRES_HOST: "localhost"
-        POSTGRES_PORT: 5432
-        POSTGRES_USER: "postgres"
-        POSTGRES_PASSWORD: "your_password"
-        POSTGRES_DB: "weatherdb"
+A production-ready **NestJS** application that integrates with **OpenWeatherMap**, supports **authentication (JWT)**, **caching (Redis)**, **rate limiting**, **background jobs**, and provides **REST & GraphQL APIs**.
 
-    - step: "Run PostgreSQL & Redis (Docker)"
-      command: "docker-compose up -d"
+---
 
-    - step: "Run Database Migrations"
-      command: "npm run typeorm migration:run"
+## 🚀 Features
 
-    - step: "Start the Server"
-      command: "npm run start"
+✅ **NestJS Modular Architecture**  
+✅ **REST & GraphQL Support**  
+✅ **Authentication (JWT)**  
+✅ **Rate Limiting**  
+✅ **Caching (Redis)**  
+✅ **Background Jobs (Weather Updates)**  
+✅ **Logging & Error Handling**  
+✅ **100% Test Coverage with Jest**  
 
-    - step: "API Documentation"
-      links:
-        - REST API (Swagger): "http://localhost:3000/docs"
-        - GraphQL Playground: "http://localhost:3000/graphql"
+---
 
-api:
-  rest:
-    - endpoint: "/weather/:city"
-      method: "GET"
-      description: "Retrieve current weather for a city."
-      response:
-        city: "New York"
-        temperature: 25
-        humidity: 80
-        description: "Cloudy"
+## 🛠️ Setup Instructions
 
-    - endpoint: "/forecast/:city"
-      method: "GET"
-      description: "Retrieve a 5-day weather forecast."
+### **1️⃣ Install Dependencies**
+```sh
+npm install
+```
 
-    - endpoint: "/locations"
-      method: "POST"
-      description: "Add a location to the user's favorites."
-      request:
-        city: "London"
+### **2️⃣ Set Up Environment Variables**
+Create a `.env` file in the project root:
+```ini
+PORT=3000
+OPENWEATHER_API_KEY=your_openweathermap_api_key
+JWT_SECRET=your_secret
+REDIS_HOST=localhost
+REDIS_PORT=6379
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=weatherdb
+```
 
-    - endpoint: "/locations"
-      method: "GET"
-      description: "Retrieve the user's favorite locations."
+### **3️⃣ Run PostgreSQL & Redis (Docker)**
+```sh
+docker-compose up -d
+```
 
-    - endpoint: "/locations/:id"
-      method: "DELETE"
-      description: "Remove a location from favorites."
+### **4️⃣ Run Migrations**
+```sh
+npm run typeorm migration:run
+```
 
-  graphql:
-    - query:
-        name: "weather"
-        description: "Get current weather for a city."
-        syntax: |
-          query {
-            weather(city: "Paris") {
-              city
-              temperature
-              description
-            }
-          }
+### **5️⃣ Start the Server**
+```sh
+npm run start
+```
 
-    - mutation:
-        name: "addFavorite"
-        description: "Add a city to favorites."
-        syntax: |
-          mutation {
-            addFavorite(userId: 1, city: "Berlin") {
-              id
-              city
-            }
-          }
+### **6️⃣ Open API Documentation**
+- **REST API (Swagger):** [`http://localhost:3000/docs`](http://localhost:3000/docs)
+- **GraphQL Playground:** [`http://localhost:3000/graphql`](http://localhost:3000/graphql)
 
-    - mutation:
-        name: "removeFavorite"
-        description: "Remove a favorite city."
-        syntax: |
-          mutation {
-            removeFavorite(id: 2)
-          }
+---
 
-authentication:
-  type: "JWT (JSON Web Token)"
-  obtain_token:
-    method: "POST"
-    endpoint: "/auth/login"
-  usage:
-    header: "Authorization: Bearer <TOKEN>"
+## 📌 API Documentation
 
-caching:
-  strategy:
-    - "Weather data is cached in Redis for 30 minutes."
-    - "Favorite locations fetch fresh data on every request."
+### **🔹 REST API**
+#### **1️⃣ Get Current Weather**
+```http
+GET /weather/:city
+```
+**Response:**
+```json
+{
+  "city": "New York",
+  "temperature": 25,
+  "humidity": 80,
+  "description": "Cloudy"
+}
+```
 
-rate_limiting:
-  limit: "60 requests per minute"
-  exceeded_response: "HTTP 429 Too Many Requests"
+#### **2️⃣ Get 5-Day Forecast**
+```http
+GET /forecast/:city
+```
 
-testing:
-  commands:
-    - "Run Tests: npm run test"
-    - "Check Coverage: npm run test:cov"
+#### **3️⃣ Add Favorite Location**
+```http
+POST /locations
+Content-Type: application/json
 
-license:
-  type: "MIT License"
+{
+  "city": "London"
+}
+```
+
+#### **4️⃣ Get Favorite Locations**
+```http
+GET /locations
+```
+
+#### **5️⃣ Remove Favorite**
+```http
+DELETE /locations/:id
+```
+
+---
+
+### **🔹 GraphQL API**
+#### **1️⃣ Get Weather**
+```graphql
+query {
+  weather(city: "Paris") {
+    city
+    temperature
+    description
+  }
+}
+```
+
+#### **2️⃣ Add Favorite**
+```graphql
+mutation {
+  addFavorite(userId: 1, city: "Berlin") {
+    id
+    city
+  }
+}
+```
+
+#### **3️⃣ Remove Favorite**
+```graphql
+mutation {
+  removeFavorite(id: 2)
+}
+```
+
+---
+
+## 🔐 Authentication
+
+- User must be authenticated using **JWT**.
+- Obtain a token via:
+  
+  ```http
+  POST /auth/login
+  ```
+  
+- Include it in the `Authorization` header:
+
+  ```http
+  Authorization: Bearer <TOKEN>
+  ```
+
+---
+
+## ⚡ Caching Strategy
+
+- **Weather data** is cached in **Redis** for **30 minutes**.
+- **Favorite locations** fetch fresh data on every request.
+
+---
+
+## 🚦 Rate Limiting
+
+- Users can make **60 requests per minute**.
+- Exceeding this limit returns:
+
+  ```http
+  HTTP 429 Too Many Requests
+  ```
+
+---
+
+## 🔄 Background Jobs
+
+- A **background job runs every 30 minutes** to update the **weather data** for all **favorite locations**.
+- This ensures the latest data is available without overloading the API.
+
+---
+
+## ✅ Running Tests & Checking Coverage
+
+Run all tests:
+```sh
+npm run test
+```
+
+Check test coverage:
+```sh
+npm run test:cov
+```
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+│── modules/
+│   ├── weather/
+│   │   ├── weather.module.ts
+│   │   ├── weather.service.ts
+│   │   ├── weather.controller.ts
+│   │   ├── weather.resolver.ts
+│   │   ├── dto/
+│   │   ├── entities/
+│   ├── favorites/
+│   │   ├── favorites.module.ts
+│   │   ├── favorites.service.ts
+│   │   ├── favorites.controller.ts
+│   │   ├── favorites.resolver.ts
+│   │   ├── dto/
+│   │   ├── entities/
+│   │   ├── guards/
+│   ├── auth/
+│   │   ├── auth.module.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.controller.ts
+│   │   ├── jwt.strategy.ts
+│   │   ├── local.strategy.ts
+│── config/
+│   ├── app.config.ts
+│── jobs/
+│   ├── weather-update.job.ts
+│── common/
+│   ├── filters/
+│   ├── interceptors/
+│   ├── middleware/
+│── main.ts
+│── app.module.ts
+│── .env
+│── README.md
+```
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
