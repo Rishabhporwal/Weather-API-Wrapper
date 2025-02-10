@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FavoriteModule } from './modules/favorite/favorite.module';
 import { WeatherModule } from './modules/weather/weather.module';
@@ -15,6 +15,7 @@ import { WeatherUpdateJob } from './job/weather-update.job';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -56,7 +57,14 @@ import { join } from 'path';
     AuthModule,
     FavoriteModule,
   ],
-  providers: [CustomLogger, WeatherUpdateJob],
+  providers: [
+    CustomLogger,
+    WeatherUpdateJob,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
   exports: [CustomLogger],
 })
 export class AppModule {}
