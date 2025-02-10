@@ -1,6 +1,6 @@
 # 🌤 NestJS Weather API
 
-A production-ready **NestJS** application that integrates with **OpenWeatherMap**, supports **authentication (JWT)**, **caching (Redis)**, **rate limiting**, **background jobs**, and provides **REST & GraphQL APIs**.
+A **NestJS** application that integrates with **OpenWeatherMap**, supports **authentication (JWT)**, **caching (Redis)**, **rate limiting**, **background jobs**, and provides **REST & GraphQL APIs**.
 
 ---
 
@@ -13,48 +13,53 @@ A production-ready **NestJS** application that integrates with **OpenWeatherMap*
 ✅ **Caching (Redis)**  
 ✅ **Background Jobs (Weather Updates)**  
 ✅ **Logging & Error Handling**  
-✅ **100% Test Coverage with Jest**  
+✅ **Test Coverage with Jest**
 
 ---
 
 ## 🛠️ Setup Instructions
 
 ### **1️⃣ Install Dependencies**
+
 ```sh
 npm install
 ```
 
 ### **2️⃣ Set Up Environment Variables**
+
 Create a `.env` file in the project root:
+
 ```ini
 PORT=3000
 OPENWEATHER_API_KEY=your_openweathermap_api_key
-JWT_SECRET=your_secret
+JWT_SECRET=secret key
 REDIS_HOST=localhost
 REDIS_PORT=6379
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_password
+POSTGRES_PASSWORD=password
 POSTGRES_DB=weatherdb
 ```
 
 ### **3️⃣ Run PostgreSQL & Redis (Docker)**
+
 ```sh
 docker-compose up -d
 ```
 
-### **4️⃣ Run Migrations**
 ```sh
-npm run typeorm migration:run
+docker-compose ps
 ```
 
-### **5️⃣ Start the Server**
+### **4️⃣ Start the Server**
+
 ```sh
 npm run start
 ```
 
-### **6️⃣ Open API Documentation**
+### **5️⃣ Open API Documentation**
+
 - **REST API (Swagger):** [`http://localhost:3000/docs`](http://localhost:3000/docs)
 - **GraphQL Playground:** [`http://localhost:3000/graphql`](http://localhost:3000/graphql)
 
@@ -63,49 +68,125 @@ npm run start
 ## 📌 API Documentation
 
 ### **🔹 REST API**
+
 #### **1️⃣ Get Current Weather**
+
 ```http
 GET /weather/:city
 ```
+
 **Response:**
+
 ```json
 {
-  "city": "New York",
-  "temperature": 25,
-  "humidity": 80,
-  "description": "Cloudy"
+  "city": "indore",
+  "temperature": 20.11,
+  "description": "clear sky",
+  "humidity": 20,
+  "windSpeed": 2.93
 }
 ```
 
 #### **2️⃣ Get 5-Day Forecast**
+
 ```http
 GET /forecast/:city
 ```
 
+**Response:**
+
+```json
+[
+  {
+    "date": "2025-02-10 18:00:00",
+    "temperature": 18.86,
+    "description": "overcast clouds"
+  },
+  {
+    "date": "2025-02-10 21:00:00",
+    "temperature": 18.77,
+    "description": "overcast clouds"
+  },
+  {
+    "date": "2025-02-11 00:00:00",
+    "temperature": 18.53,
+    "description": "broken clouds"
+  },
+  {
+    "date": "2025-02-11 03:00:00",
+    "temperature": 17.86,
+    "description": "clear sky"
+  },
+  {
+    "date": "2025-02-11 06:00:00",
+    "temperature": 20.76,
+    "description": "few clouds"
+  }
+]
+```
+
 #### **3️⃣ Add Favorite Location**
+
 ```http
 POST /locations
 Content-Type: application/json
+Authorization: Bearer access_token
 
 {
   "city": "London"
 }
 ```
 
+**Response:**
+
+```json
+{
+  "city": "London",
+  "user": { "id": 3, "email": "rishabhporwal@example.com" },
+  "id": 14,
+  "createdAt": "2025-02-10T16:48:40.816Z"
+}
+```
+
 #### **4️⃣ Get Favorite Locations**
+
 ```http
 GET /locations
 ```
 
+**Response:**
+
+```json
+[
+  {
+    "id": 14,
+    "city": "London",
+    "createdAt": "2025-02-10T16:48:40.816Z"
+  }
+]
+```
+
 #### **5️⃣ Remove Favorite**
+
 ```http
 DELETE /locations/:id
+```
+
+**Response:**
+
+```json
+{
+  "city": "Mumbai",
+  "createdAt": "2025-02-10T14:16:33.363Z"
+}
 ```
 
 ---
 
 ### **🔹 GraphQL API**
+
 #### **1️⃣ Get Weather**
+
 ```graphql
 query {
   weather(city: "Paris") {
@@ -117,6 +198,7 @@ query {
 ```
 
 #### **2️⃣ Add Favorite**
+
 ```graphql
 mutation {
   addFavorite(userId: 1, city: "Berlin") {
@@ -127,6 +209,7 @@ mutation {
 ```
 
 #### **3️⃣ Remove Favorite**
+
 ```graphql
 mutation {
   removeFavorite(id: 2)
@@ -139,11 +222,11 @@ mutation {
 
 - User must be authenticated using **JWT**.
 - Obtain a token via:
-  
+
   ```http
   POST /auth/login
   ```
-  
+
 - Include it in the `Authorization` header:
 
   ```http
@@ -180,11 +263,13 @@ mutation {
 ## ✅ Running Tests & Checking Coverage
 
 Run all tests:
+
 ```sh
 npm run test
 ```
 
 Check test coverage:
+
 ```sh
 npm run test:cov
 ```

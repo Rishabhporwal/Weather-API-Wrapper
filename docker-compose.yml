@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Service
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: weatherdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - weather_network
+
+  # Redis Service
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - weather_network
+
+# Named volume for PostgreSQL data
+volumes:
+  postgres_data:
+
+# Define the network to be used by the services
+networks:
+  weather_network:
+    driver: bridge
