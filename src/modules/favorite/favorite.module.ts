@@ -3,11 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Favorite } from './entities/favorite.entity';
 import { FavoriteService } from './favorite.service';
 import { FavoriteController } from './favorite.controller';
-import { FavoriteResolver } from './favorite.resolver';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Favorite])],
-  providers: [FavoriteService, FavoriteResolver],
+  providers: [FavoriteService],
   controllers: [FavoriteController],
   exports: [FavoriteService],
 })

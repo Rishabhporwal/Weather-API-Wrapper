@@ -1,0 +1,16 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  getForecast(city: String!): [WeatherDto!]!
+  getWeather(city: String!): WeatherDto!
+}
+
+type WeatherDto {
+  city: String!
+  description: String!
+  humidity: Float!
+  temperature: Float!
+  windSpeed: Float!
+}

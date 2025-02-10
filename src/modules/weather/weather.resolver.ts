@@ -1,17 +1,18 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { WeatherService } from './weather.service';
+import { WeatherDto } from './dto/weather.dto';
 
-@Resolver('Weather')
+@Resolver(() => WeatherDto)
 export class WeatherResolver {
   constructor(private readonly weatherService: WeatherService) {}
 
-  @Query(() => String)
-  async getWeather(@Args('city') city: string) {
+  @Query(() => WeatherDto, { name: 'getWeather' })
+  async getWeather(@Args('city') city: string): Promise<WeatherDto> {
     return this.weatherService.getWeather(city);
   }
 
-  @Query(() => String)
-  async getForecast(@Args('city') city: string) {
+  @Query(() => [WeatherDto], { name: 'getForecast' })
+  async getForecast(@Args('city') city: string): Promise<WeatherDto[]> {
     return this.weatherService.getForecast(city);
   }
 }
