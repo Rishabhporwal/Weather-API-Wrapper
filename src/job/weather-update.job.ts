@@ -32,7 +32,7 @@ export class WeatherUpdateJob {
         await this.cacheManager.set(
           `weather_${favorite.city}`,
           weatherData,
-          1800,
+          360000,
         ); // Cache for 30 minutes
         this.logger.log(`Updated weather for ${favorite.city}`);
       } catch (error) {

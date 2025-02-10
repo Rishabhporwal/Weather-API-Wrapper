@@ -1,4 +1,4 @@
-# 🌤 NestJS Weather API
+# NestJS Weather API Wrapper
 
 A **NestJS** application that integrates with **OpenWeatherMap**, supports **authentication (JWT)**, **caching (Redis)**, **rate limiting**, **background jobs**, and provides **REST & GraphQL APIs**.
 
@@ -176,7 +176,7 @@ DELETE /locations/:id
 
 ```json
 {
-  "city": "Mumbai",
+  "city": "London",
   "createdAt": "2025-02-10T14:16:33.363Z"
 }
 ```
@@ -315,9 +315,3 @@ src/
 │── .env
 │── README.md
 ```
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.

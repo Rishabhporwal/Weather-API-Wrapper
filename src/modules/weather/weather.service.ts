@@ -65,7 +65,7 @@ export class WeatherService {
   }
 
   async getForecast(city: string): Promise<any> {
-    const cacheKey = `forecast_${city}`;
+    const cacheKey = `forecast-${city}`;
     const cachedData = await this.cacheManager.get(cacheKey);
 
     if (cachedData) {
