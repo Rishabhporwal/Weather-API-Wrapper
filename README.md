@@ -284,30 +284,36 @@ src/
 │   ├── weather/
 │   │   ├── weather.module.ts
 │   │   ├── weather.service.ts
+│   │   ├── weather.service.spec.ts
 │   │   ├── weather.controller.ts
+│   │   ├── weather.controller.spec.ts
 │   │   ├── weather.resolver.ts
 │   │   ├── dto/
 │   │   ├── entities/
 │   ├── favorites/
 │   │   ├── favorites.module.ts
 │   │   ├── favorites.service.ts
+│   │   ├── favorites.service.spec.ts
 │   │   ├── favorites.controller.ts
+│   │   ├── favorites.controller.spec.ts
 │   │   ├── favorites.resolver.ts
 │   │   ├── dto/
 │   │   ├── entities/
-│   │   ├── guards/
 │   ├── auth/
 │   │   ├── auth.module.ts
 │   │   ├── auth.service.ts
 │   │   ├── auth.controller.ts
-│   │   ├── jwt.strategy.ts
-│   │   ├── local.strategy.ts
+│   │   ├── dto/
+│   │   ├── entities/
+│   │   ├── guards/
+│   │   ├── strategies/
 │── logger/
 │   ├── logger.service.ts
 │── job/
 │   ├── weather-update.job.ts
 │── main.ts
 │── app.module.ts
-│── .env
-│── README.md
+.env
+README.md
+
 ```
